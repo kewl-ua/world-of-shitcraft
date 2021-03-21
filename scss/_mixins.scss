@@ -1,0 +1,26 @@
+@mixin position($position: absolute, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+    position: $position;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+@mixin font($size: $global-font-size, $weight: normal, $style: normal, $line-height: normal) {
+    font-size: $size;
+    font-weight: $weight;
+    font-style: $style;
+    line-height: $line-height;
+}
+
+/*
+    The element is not rendered on screen, but exposed in the accessibility tree,
+    and still accessible to keyboard navigation.
+*/
+@mixin visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    clip: rect(0 0 0 0);
+}
