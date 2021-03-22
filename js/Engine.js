@@ -26,6 +26,7 @@ const stepTypes = {
 };
 
 const actionTypes = {
+    CREATE_HERO: 'CREATE_HERO',
     ATTACK: 'ATTACK',
     START: 'START',
     FIGHT: 'FIGHT',
@@ -140,6 +141,7 @@ const spawnImpossibleMob = generateMobSpawner(complexityModes.IMPOSSIBLE);
 // Game
 const actions = {
     attack: (attacker, target) => ({ type: actionTypes.ATTACK, attacker, target }),
+    createHero: () => ({ type:  actionTypes.CREATE_HERO }),
     start: (hero) => ({ type: actionTypes.START, hero }),
     lookForEnemies: () => ({ type: actionTypes.LOOK_FOR_ENEMIES }),
     fight: () => ({ type: actionTypes.FIGHT }),
@@ -147,7 +149,7 @@ const actions = {
 };
 
 const initialState = {
-    step: stepTypes.START,
+    step: stepTypes.CREATE_HERO,
     hero: null,
     mob: null,
     score: null,
@@ -177,6 +179,36 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
     },
     reduce(state = initialState, action) {
         switch (action.type) {
+            case actionTypes.CREATE_HERO: {
+                const hero = null;
+                const score = null;
+                const step = stepTypes.CREATE_HERO;
+
+                console.log('Creating hero...');
+
+                return { ...state, hero, score, step };
+            }
+            case actionTypes.START: {
+                const score = 0;
+                const { name, className } = action.hero;
+                const hero = this.spawnHero(className)(name);
+                const keepPlaying = true;
+                const step = stepTypes.IDLE;
+                const bestScore = state.bestScore || 0; // TODO: implement with local storage 
+
+                return { ...state, hero, bestScore, score, keepPlaying, step };
+            }
+            case actionTypes.LOOK_FOR_ENEMIES: {
+                const mob = this.spawnMob();
+                const step = stepTypes.DOUBTING;
+
+                return { ...state, mob, step };
+            }
+            case actionTypes.FIGHT: {
+                const step = stepTypes.FIGHTING;
+
+                return { ...state, step };
+            }
             case actionTypes.ATTACK: {
                 function attack(attacker, target) {
                     const hpPrediction = target.hp - attacker.dmg;
@@ -208,27 +240,6 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 }
 
                 return { ...state, mob, hero, step };
-            }
-            case actionTypes.START: {
-                const score = 0;
-                const { name, className } = action.hero;
-                const hero = this.spawnHero(className)(name);
-                const keepPlaying = true;
-                const step = stepTypes.IDLE;
-                const bestScore = 0; // TODO: implement with local storage 
-
-                return { ...state, hero, bestScore, score, keepPlaying, step };
-            }
-            case actionTypes.LOOK_FOR_ENEMIES: {
-                const mob = this.spawnMob();
-                const step = stepTypes.DOUBTING;
-
-                return { ...state, mob, step };
-            }
-            case actionTypes.FIGHT: {
-                const step = stepTypes.FIGHTING;
-
-                return { ...state, step };
             }
             case actionTypes.FINISH: {
                 const keepPlaying = false;

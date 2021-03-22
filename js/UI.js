@@ -332,7 +332,7 @@ function PromptControls(content, options) {
         classes: ['prompt-controls'],
         content,
         ...options
-    })
+    });
 
     return tree;
 }
@@ -349,7 +349,7 @@ function PromptControl(content, options) {
 }
 
 // App components
-function StartComponent() {
+function CreateHeroComponent() {
     const tree = new C({
         tag: 'div',
         classes: ['box'],
@@ -407,16 +407,16 @@ function DoubtingComponent() {
 
 function FinishComponent() {
     const score = gameContext.state.score;
-
     const textTree = PropmtText(`Your score is: ${score}.\n Do you want to start again?`);
     const contentTree = PromptContent(textTree);
-    const startControlTree = PromptControl('Start again', C({
+    const startControlTree = PromptControl('Start again', {
         events: {
             click() {
-                gameContext.dispatch(actions.start());
+                console.log('Click');
+                gameContext.dispatch(actions.createHero());
             }
         }
-    }));
+    });
     const controlsTree = PromptControls(startControlTree);
     const tree = Prompt([contentTree, controlsTree]);
 
@@ -436,7 +436,7 @@ class GameUI {
 
     react(state) {
         switch (state.step) {
-            case stepTypes.START:
+            case stepTypes.CREATE_HERO:
                 this.domEl = this.createHero();
                 break;
             case stepTypes.IDLE:
@@ -454,7 +454,7 @@ class GameUI {
     }
 
     createHero() {
-        return StartComponent();
+        return CreateHeroComponent();
     }
 
     idle() {

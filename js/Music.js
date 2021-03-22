@@ -7,7 +7,6 @@ class MusicSurrounder {
         this.audioEl = new Audio();
         this.currentSong = null;
 
-        this.volume(0.3);
         this.mount(mountTarget);
     }
 
@@ -16,7 +15,6 @@ class MusicSurrounder {
      * @param {float} v - from 0.00 to 1.00
      */
     volume(v) {
-        console.log(this.audioEl.volume);
         this.audioEl.volume = v;
     }
 
@@ -43,6 +41,7 @@ class MusicSurrounder {
         switch (step) {
             case stepTypes.START:
             case stepTypes.IDLE:
+                this.volume(0.3);
                 this.changeSong('../music/start.mp3');
                 break;
             case stepTypes.DOUBTING:
