@@ -1,21 +1,37 @@
 class MusicSurrounder {
+    /**
+     * 
+     * @param {HTMLElement} mountTarget 
+     */
     constructor(mountTarget) {
-        this.domEl = this.config(new Audio());
+        this.audioEl = new Audio();
         this.currentSong = null;
 
+        this.volume(0.3);
         this.mount(mountTarget);
     }
 
-    config(audioEl) {
-        audioEl.volume = 0.3;
-
-        return audioEl;
+    /**
+     * 
+     * @param {float} v - from 0.00 to 1.00
+     */
+    volume(v) {
+        console.log(this.audioEl.volume);
+        this.audioEl.volume = v;
     }
 
+    /**
+     * 
+     * @param {HTMLElement} target 
+     */
     mount(target) {
-        target.replaceChildren(this.domEl);
+        target.replaceChildren(this.audioEl);
     }
 
+    /**
+     * 
+     * @param {string} src - URI
+     */
     changeSong(src) {
         if (this.currentSong !== src) {
             this.currentSong = src;
@@ -31,9 +47,11 @@ class MusicSurrounder {
                 break;
             case stepTypes.DOUBTING:
             case stepTypes.FIGHTING:
+                this.volume(1);
                 this.changeSong('../music/fight.mp3');
                 break;
             case stepTypes.FINISH:
+                this.volume(1);
                 this.changeSong('../music/finish.mp3');
                 break;
             default:
@@ -42,11 +60,11 @@ class MusicSurrounder {
     }
 
     play() {
-        this.domEl.src = this.currentSong;
-        this.domEl.play().catch(this.handleFail.bind(this));
+        this.audioEl.src = this.currentSong;
+        this.audioEl.play().catch(this.handleFail.bind(this));
     }
 
     handleFail() {
-        document.body.addEventListener('click', () => { this.domEl.play(); }, { once: true });
+        document.body.addEventListener('click', () => { this.audioEl.play(); }, { once: true });
     }
 }

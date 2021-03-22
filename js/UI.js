@@ -406,9 +406,19 @@ function DoubtingComponent() {
 }
 
 function FinishComponent() {
-    const textTree = PropmtText('To be continued...');
+    const score = gameContext.state.score;
+
+    const textTree = PropmtText(`Your score is: ${score}.\n Do you want to start again?`);
     const contentTree = PromptContent(textTree);
-    const tree = Prompt(contentTree);
+    const startControlTree = PromptControl('Start again', C({
+        events: {
+            click() {
+                gameContext.dispatch(actions.start());
+            }
+        }
+    }));
+    const controlsTree = PromptControls(startControlTree);
+    const tree = Prompt([contentTree, controlsTree]);
 
     return tree;
 }
