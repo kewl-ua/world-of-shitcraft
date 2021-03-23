@@ -224,7 +224,7 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 return { ...state, step };
             }
             case actionTypes.LOOK_FOR_ENEMIES: {
-                const mob = this.spawnMob()();
+                const mob = this.spawnMob()(); // TODO: refatctor
                 const step = stepTypes.ENEMY_FOUND;
 
                 return { ...state, mob, step };
