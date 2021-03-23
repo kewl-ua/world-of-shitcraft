@@ -30,9 +30,32 @@ function watch(cb) {
     cb();
 }
 
+function html(cb) {
+    gulp.src('./index.html')
+        .pipe(gulp.dest('./build'));
+
+    cb();
+}
+
+function stylesBuild(cb) {
+    gulp.src('./scss/index.scss')
+        .pipe(sass({ outputStyle: 'expanded' }).on('error', sass.logError))
+        .pipe(autoprefixer(['last 30 versions']))
+        .pipe(gulp.dest('./build/css'));
+
+    cb();
+}
+
+function scriptsBuild(cb) {
+    gulp.src('./js/**/*')
+        .pipe(gulp.dest('./build'));
+
+    cb();
+}
+
 module.exports = {
     default: gulp.series(styles, watch, serve),
     watch,
     styles,
-    build: gulp.series(styles)
+    build: gulp.series(html, stylesBuild, scriptsBuild)
 };
