@@ -575,8 +575,7 @@ function Card(content) {
     return tree;
 }
 
-function HeroCard() {
-    const { hero } = gameContext.state;
+function HeroCard(hero) {
     const tree = Card([
         CardContentHero(hero),
         CardFooter(CardStatsHero(hero))
@@ -590,6 +589,16 @@ function MobCard(mob) {
         CardContentMob(mob),
         CardFooter(CardStatsMob(mob))
     ]);
+
+    return tree;
+}
+
+// Fight
+function Attack() {
+    const tree = C({
+        tag: 'button',
+        classes: ['attack'],
+    });
 
     return tree;
 }
@@ -730,6 +739,29 @@ function FinishComponent() {
     return tree;
 }
 
+function FightingComponent() {
+    const { hero, mob } = gameContext.state;
+    const tree = C({
+        tag: 'div',
+        classes: ['arena'],
+        content: [
+            C({
+                tag: 'div',
+                classes: ['arena-fighter'],
+                content: HeroCard(hero)
+            }),
+            Attack(),
+            C({
+                tag: 'div',
+                classes: ['arena-fighter'],
+                content: MobCard(mob)
+            })
+        ]
+    });
+
+    return tree;
+}
+
 class GameUI {
     constructor(game, mountTarget) {
         this.game = game;
@@ -804,7 +836,7 @@ class GameUI {
     }
 
     fighting() {
-        return HeroCard();
+        return FightingComponent();
     }
 
     finish() {

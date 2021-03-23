@@ -327,7 +327,7 @@
             padding-left: 50px;
 
             &::before {
-                @include icon-attack(40px, 40px);
+                @include icon-damage(40px, 40px);
             }
         }
 
@@ -338,3 +338,24 @@
         }
     }
 }
+
+.arena {
+    @include scene;
+
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+
+    &-fighter {
+        position: relative;
+    }
+}
+
+.attack {
+    @include icon-attack(50px, 50px);
+
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+}
+

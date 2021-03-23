@@ -12,17 +12,26 @@
     @include icon('../img/icons/heart.png', $width, $height);
 }
 
-@mixin icon-attack($width, $height) {
-    @include icon('../img/icons/attack.png', $width, $height);
+@mixin icon-damage($width, $height) {
+    @include icon('../img/icons/damage.png', $width, $height);
 }
 
 @mixin icon-award($width, $height) {
     @include icon('../img/icons/award.png', $width, $height);
 }
 
-@mixin box() {
+@mixin icon-attack($width, $height) {
+    @include icon('../img/icons/attack.svg', $width, $height);
+}
+
+@mixin scene() {
     @include position(absolute, 50%, auto, auto, 50%);
 
     transform: translate(-50%, -50%);
+}
+
+@mixin box() {
+    @include scene;    
+
     box-shadow: 7px 9px 20px 7px rgba(0,0,0,.4);
 }
