@@ -48,7 +48,21 @@ function stylesBuild(cb) {
 
 function scriptsBuild(cb) {
     gulp.src('./js/**/*')
-        .pipe(gulp.dest('./build'));
+        .pipe(gulp.dest('./build/js'));
+
+    cb();
+}
+
+function imagesBuild(cb) {
+    gulp.src('./img/**/*')
+        .pipe(gulp.dest('./build/img'));
+
+    cb();
+}
+
+function musicBuild(cb) {
+    gulp.src('./music/**/*')
+        .pipe(gulp.dest('./build/music'));
 
     cb();
 }
@@ -57,5 +71,5 @@ module.exports = {
     default: gulp.series(styles, watch, serve),
     watch,
     styles,
-    build: gulp.series(html, stylesBuild, scriptsBuild)
+    build: gulp.series(html, stylesBuild, scriptsBuild, imagesBuild, musicBuild)
 };
