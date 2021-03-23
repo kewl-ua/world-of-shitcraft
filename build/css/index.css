@@ -398,18 +398,18 @@ button {
 }
 
 .card-info-bg-hero {
-  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 25, 115, 0.65))), url("../img/fight-hero.jpeg");
-  background: -o-linear-gradient(left, rgba(0, 25, 115, 0.65)), url("../img/fight-hero.jpeg");
-  background: linear-gradient(to right, rgba(0, 25, 115, 0.65)), url("../img/fight-hero.jpeg");
+  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 25, 115, 0.65))), url("img/fight-hero.jpeg");
+  background: -o-linear-gradient(left, rgba(0, 25, 115, 0.65)), url("img/fight-hero.jpeg");
+  background: linear-gradient(to right, rgba(0, 25, 115, 0.65)), url("img/fight-hero.jpeg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
 }
 
 .card-info-bg-mob {
-  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 25, 115, 0.65))), url("../img/fight-mob.jpg");
-  background: -o-linear-gradient(left, rgba(0, 25, 115, 0.65)), url("../img/fight-mob.jpg");
-  background: linear-gradient(to right, rgba(0, 25, 115, 0.65)), url("../img/fight-mob.jpg");
+  background: -webkit-gradient(linear, left top, right top, from(rgba(0, 25, 115, 0.65))), url("img/fight-mob.jpg");
+  background: -o-linear-gradient(left, rgba(0, 25, 115, 0.65)), url("img/fight-mob.jpg");
+  background: linear-gradient(to right, rgba(0, 25, 115, 0.65)), url("img/fight-mob.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
