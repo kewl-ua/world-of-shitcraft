@@ -402,7 +402,19 @@ function CardContent(content) {
 }
 
 function CardContentHero(hero) {
-    const tree = CardContent([CardInfoHero(hero), CardImage(hero)]);
+    const tree = CardContent([
+        CardInfoHero(hero),
+        CardImage(hero)
+    ]);
+
+    return tree;
+}
+
+function CardContentMob(mob) {
+    const tree = CardContent([
+        CardInfoMob(mob),
+        CardImage(mob)
+    ]);
 
     return tree;
 }
@@ -421,10 +433,22 @@ function CardInfoHero(hero) {
     const tree = CardInfo([
         C({
             tag: 'div',
-            classes: ['card-info-bg']
+            classes: ['card-info-bg', 'card-info-bg-hero'],
         }),
         CardTitle(hero.name),
         CardSubtitle(hero.className)
+    ]);
+
+    return tree;
+}
+
+function CardInfoMob(mob) {
+    const tree = CardInfo([
+        C({
+            tag: 'div',
+            classes: ['card-info-bg', 'card-info-bg-mob'],
+        }),
+        CardTitle(mob.className),
     ]);
 
     return tree;
@@ -486,6 +510,18 @@ function CardStatsHero(hero) {
     return tree;
 }
 
+function CardStatsMob(mob) {
+    const tree = C({
+        tag: 'ul',
+        classes: ['card-stats'],
+        content: CardStats([
+            CardStatHp(mob.hp),
+            CardStatDmg(mob.dmg)
+        ])
+    });
+
+    return tree;
+}
 
 function CardStatDmg(dmg) {
     const tree = C({
@@ -541,10 +577,18 @@ function Card(content) {
 
 function HeroCard() {
     const { hero } = gameContext.state;
-
     const tree = Card([
         CardContentHero(hero),
         CardFooter(CardStatsHero(hero))
+    ]);
+
+    return tree;
+}
+
+function MobCard(mob) {
+    const tree = Card([
+        CardContentMob(mob),
+        CardFooter(CardStatsMob(mob))
     ]);
 
     return tree;
@@ -600,9 +644,71 @@ function IdleComponent() {
 }
 
 function DoubtingComponent() {
-    const textTree = PropmtText('To be continued...');
+    const textTree = PropmtText('Will you fight or run away?');
+    const contentTree = PromptContent(textTree);
+    const fightControlTree = PromptControl('Fight', {
+        events: {
+            click() {
+                gameContext.dispatch(actions.fight());
+            }
+        }
+    });
+    const runAwayTree = PromptControl('Run away', {
+        events: {
+            click() {
+                gameContext.dispatch(actions.runAway());
+            }
+        }
+    });
+    const controlsTree = PromptControls([fightControlTree, runAwayTree]);
+    const tree = Prompt([contentTree, controlsTree]);
+
+    return tree;
+}
+
+function RunningAwayComponent() {
+    const textTree = PropmtText('Your moral has been decreased');
     const contentTree = PromptContent(textTree);
     const tree = Prompt(contentTree);
+
+    setTimeout(() => {
+        gameContext.dispatch(actions.determinePath());
+    }, 1500);
+
+    return tree;
+}
+
+function DetermingPathComponent() {
+    const { hero } = gameContext.state;
+    const tree = HeroCard(hero);
+
+    setTimeout(() => {
+        gameContext.dispatch(actions.idle());
+    }, 1500);
+
+    return tree;
+}
+
+function EnemyFoundComponent() {
+    const { mob } = gameContext.state;
+    const textTree = PropmtText('You\'ve found ' + mob.className);
+    const contentTree = PromptContent(textTree);
+    const tree = Prompt(contentTree);
+
+    setTimeout(() => {
+        gameContext.dispatch(actions.introduceEnemy());
+    }, 1500);
+
+    return tree;
+}
+
+function IntroducingEnemyComponent() {
+    const { mob } = gameContext.state;
+    const tree = MobCard(mob);
+
+    setTimeout(() => {
+        gameContext.dispatch(actions.doubt());
+    }, 1500);
 
     return tree;
 }
@@ -640,11 +746,23 @@ class GameUI {
             case stepTypes.CREATE_HERO:
                 this.domEl = this.createHero();
                 break;
+            case stepTypes.DETERMING_PATH:
+                this.domEl = this.determingPath();
+                break;
             case stepTypes.IDLE:
                 this.domEl = this.idle();
                 break;
+            case stepTypes.ENEMY_FOUND:
+                this.domEl = this.enemyFound();
+                break;
+            case stepTypes.INTRODUCING_ENEMY:
+                this.domEl = this.introducingEnemy();
+                break;
             case stepTypes.DOUBTING:
                 this.domEl = this.doubting();
+                break;
+            case stepTypes.RUNNING_AWAY:
+                this.domEl = this.runningAway();
                 break;
             case stepTypes.FIGHTING:
                 this.domEl = this.fighting();
@@ -661,13 +779,28 @@ class GameUI {
         return CreateHeroComponent();
     }
 
+    determingPath() {
+        return DetermingPathComponent();
+    }
+
     idle() {
         return IdleComponent();
     }
 
     doubting() {
-        // return DoubtingComponent();
-        return HeroCard();
+        return DoubtingComponent();
+    }
+
+    enemyFound() {
+        return EnemyFoundComponent();
+    }
+
+    introducingEnemy() {
+        return IntroducingEnemyComponent();
+    }
+
+    runningAway() {
+        return RunningAwayComponent();
     }
 
     fighting() {

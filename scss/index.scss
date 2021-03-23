@@ -230,11 +230,22 @@
         &-bg {
             @include position(absolute, 0, 0, 0, 0);
 
-            background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight.jpeg');
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
             filter: grayscale(.7);
+
+            /* TODO: refactor */
+            &-hero {
+                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight-hero.jpeg');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
+
+            &-mob {
+                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight-mob.jpg');
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }
         }
     
     }
@@ -262,6 +273,8 @@
         &-inner {
             @include position(absolute, 0, auto, auto, 50%);
 
+            max-width: 200;
+            max-height: 230px;
             transform: translate(-50%, -75%);
         }
     }

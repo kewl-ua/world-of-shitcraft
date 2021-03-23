@@ -17,9 +17,12 @@ const mobClasses = {
 
 const stepTypes = {
     START: 'START',
+    DETERMING_PATH: 'DETERMING_PATH',
     IDLE: 'IDLE',
     FIGHTING: 'FIGHTING',
     DOUBTING: 'DOUBTING',
+    ENEMY_FOUND: 'ENEMY_FOUND',
+    INTRODUCING_ENEMY: 'INTRODUCING_ENEMY',
     RUNNING_AWAY: 'RUNNING_AWAY',
     FINISH: 'FINISH',
     FIGHT_WON: 'FIGHT_WON'
@@ -29,9 +32,14 @@ const actionTypes = {
     CREATE_HERO: 'CREATE_HERO',
     ATTACK: 'ATTACK',
     START: 'START',
+    DETERMINE_PATH: 'DETERMINE_PATH',
+    IDLE: 'IDLE',
+    LOOK_FOR_ENEMIES: 'LOOK_FOR_ENEMIES',
+    INTRODUCE_ENEMY: 'INTRODUCE_ENEMY',
+    DOUBT: 'DOUBT',
+    RUN_AWAY: 'RUN_AWAY',
     FIGHT: 'FIGHT',
-    FINISH: 'FINISH',
-    LOOK_FOR_ENEMIES: 'LOOK_FOR_ENEMIES'
+    FINISH: 'FINISH'
 };
 
 // Hero constructors
@@ -140,10 +148,15 @@ const spawnImpossibleMob = generateMobSpawner(complexityModes.IMPOSSIBLE);
 
 // Game
 const actions = {
+    start: (hero) => ({ type: actionTypes.START, hero }),
+    determinePath: () => ({ type: actionTypes.DETERMINE_PATH }),
     attack: (attacker, target) => ({ type: actionTypes.ATTACK, attacker, target }),
     createHero: () => ({ type:  actionTypes.CREATE_HERO }),
-    start: (hero) => ({ type: actionTypes.START, hero }),
+    idle: () => ({ type: actionTypes.IDLE }),
     lookForEnemies: () => ({ type: actionTypes.LOOK_FOR_ENEMIES }),
+    introduceEnemy: () => ({ type: actionTypes.INTRODUCE_ENEMY }),
+    doubt: () => ({ type: actionTypes.DOUBT }),
+    runAway: () => ({ type: actionTypes.RUN_AWAY }),
     fight: () => ({ type: actionTypes.FIGHT }),
     finish: () => ({ type: actionTypes.FINISH })
 };
@@ -196,11 +209,39 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
 
                 return { ...state, hero, bestScore, score, keepPlaying, step };
             }
+            case actionTypes.DETERMINE_PATH: {
+                const step = stepTypes.DETERMING_PATH;
+
+                return { ...state, step  };
+            }
+            case actionTypes.IDLE: {
+                const step = stepTypes.IDLE;
+
+                return { ...state, step };
+            }
             case actionTypes.LOOK_FOR_ENEMIES: {
                 const mob = this.spawnMob();
-                const step = stepTypes.DOUBTING;
+                const step = stepTypes.ENEMY_FOUND;
 
                 return { ...state, mob, step };
+            }
+            case actionTypes.INTRODUCE_ENEMY: {
+                const step = stepTypes.INTRODUCING_ENEMY;
+
+                return { ...state, step };
+            }
+            case actionTypes.DOUBT: {
+                const step = stepTypes.DOUBTING;
+
+                return { ...state, step };
+            }
+            case actionTypes.RUN_AWAY: {
+                const hero = state.hero;
+                hero.moral -= 1;
+                const step = hero.moral > hero.criticalMoral ? stepTypes.RUNNING_AWAY : stepTypes.FINISH;
+                const score = step === stepTypes.RUNNING_AWAY ? state.score + 1 : state.score;
+
+                return { ...state, hero, step, score };
             }
             case actionTypes.FIGHT: {
                 const step = stepTypes.FIGHTING;
