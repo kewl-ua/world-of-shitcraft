@@ -218,7 +218,7 @@ function HeroClassInput() {
                         attributes: {
                             for: `barbarian-radio`
                         },
-                        content: HeroClassInfo('Barbarian', `img/${heroClasses.BARBARIAN}.png`)
+                        content: HeroClassInfo('Barbarian', `../img/${heroClasses.BARBARIAN}.png`)
                     }),
                     // Paladin class
                     C({
@@ -237,7 +237,7 @@ function HeroClassInput() {
                         attributes: {
                             for: `paladin-radio`
                         },
-                        content: HeroClassInfo('Paladin', `img/${heroClasses.PALADIN}.png`)
+                        content: HeroClassInfo('Paladin', `../img/${heroClasses.PALADIN}.png`)
                     })
                 ]
             })
