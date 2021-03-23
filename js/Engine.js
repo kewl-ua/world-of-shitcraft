@@ -240,10 +240,14 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 return { ...state, step };
             }
             case actionTypes.RUN_AWAY: {
-                const hero = state.hero;
+                let { hero, mob } = state;
+
+                mob = null;
                 hero.moral -= 1;
+
                 const step = hero.moral > hero.criticalMoral ? stepTypes.RUNNING_AWAY : stepTypes.FINISH;
                 const score = step === stepTypes.RUNNING_AWAY ? state.score + 1 : state.score;
+
 
                 return { ...state, hero, step, score };
             }
