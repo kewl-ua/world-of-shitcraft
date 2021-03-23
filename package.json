@@ -1,7 +1,7 @@
 {
-  "name": "javascriptCore",
+  "name": "world-of-capitolium",
   "version": "1.0.0",
-  "description": "",
+  "description": "Develop your own way of the Capitolium Assault",
   "main": "gulpfile.js",
   "devDependencies": {
     "browser-sync": "^2.26.14",

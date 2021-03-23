@@ -1,12 +1,16 @@
 /* Abstracts */
 @import "variables";
 @import "mixins";
+
 /* Base */
 @import "reset";
 @import "base";
 
+/* Components */
+@import "components";
+
 %button {
-    @include font(1.6rem, 600);
+    @include font(1.6rem, 700);
 
     width: 168px;
     height: 58px;
@@ -25,17 +29,15 @@
 }
 
 .box {
-    @include position(absolute, 50%, auto, auto, 50%);
+    @include box;
 
     display: flex;
     flex-direction: column;
     width: 600px;
-    height: 540px;
-    transform: translate(-50%, -50%);
+    height: 560px;
     border-radius: 5px;
     color: $white-1;
     background-color: $blue-2;
-    box-shadow: $blue-4;
 
     &-head {
         background-color: $blue-3;
@@ -80,7 +82,6 @@
 }
 
 
-
 %label {
     
 }
@@ -91,6 +92,10 @@
     }
 
     &-class {
+        &:nth-of-type(2) {
+            margin-left: 20px;
+        }
+
         cursor: pointer;
     }
 }
@@ -141,16 +146,20 @@
             position: relative;
             padding: 30px 0;
             text-align: center;
+            width: 200px;
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
 
             &::before {
+                @include position(absolute, 0, auto, atuo, 50%);
+
                 content: "";
                 display: inline-block;
-                background-color: $white-1;
                 height: 3px;
                 width: 0px;
-                position: absolute;
-                top: 0;
-                left: 50%;
+                background-color: $white-1;
                 transform: translateX(-50%)
             }
         }
@@ -196,3 +205,123 @@
     }
 }
 
+.card {
+    @include box;
+
+    height: 510px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+
+    &-content {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: column;
+        color: $white-2;
+        text-align: center;
+    }
+
+    &-info {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+
+        &-bg {
+            @include position(absolute, 0, 0, 0, 0);
+
+            background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(.7);
+        }
+    
+    }
+
+    &-title {
+        @include font(3.2rem, 300);
+
+        z-index: 2;
+        margin-top: 40px;
+    }
+
+    &-subtitle {
+        @include font(1.4rem, 400);
+
+        text-transform: uppercase;
+        margin-top: 5px;
+        z-index: 2;
+    }
+
+    &-image {
+        position: relative;
+        flex-grow: 1;
+        background-color: #fff;
+
+        &-inner {
+            @include position(absolute, 0, auto, auto, 50%);
+
+            transform: translate(-50%, -75%);
+        }
+    }
+
+    &-footer {
+        display: flex;
+        align-items: center;
+        background-color: $grey-1;
+        height: 74px;
+    }
+
+    &-stats {
+        display: flex;
+        justify-content: space-evenly;
+        flex-basis: 100%;
+        align-items: center;
+        color: $grey-2;
+    }
+
+    &-stat {
+        display: inline-flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 40px;
+        position: relative;
+
+        &::before {
+            content: "";
+            display: inline-block;
+            position: absolute;
+            left: 0;
+        }
+
+        &-title {
+            font-size: 14px;
+        }
+
+        &-value {
+            font-size: 18px;
+            font-weight: 900;
+        }
+
+        &-hp {
+            &::before {
+                @include icon-heart(30px, 30px);
+            }
+        }
+
+        &-dmg {
+            padding-left: 50px;
+
+            &::before {
+                @include icon-attack(40px, 40px);
+            }
+        }
+
+        &-moral {
+            &::before {
+                @include icon-award(30px, 30px);
+            }
+        }
+    }
+}

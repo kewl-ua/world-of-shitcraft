@@ -37,7 +37,7 @@ const actionTypes = {
 // Hero constructors
 const createHero = className => stats => name => ({
     name,
-    unitClass: className,
+    className,
     hp: stats.hp,
     moral: stats.moral,
     dmg: stats.dmg,
@@ -58,7 +58,7 @@ const createImpossibleBarbarianHero = createBarbarianHero({ hp: 45, dmg: 8, mora
 
 // Mob constructos
 const createMob = className => stats => ({
-    unitClass: className,
+    className,
     hp: stats.hp,
     dmg: stats.dmg,
     criticalHp: 0
@@ -183,8 +183,6 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 const hero = null;
                 const score = null;
                 const step = stepTypes.CREATE_HERO;
-
-                console.log('Creating hero...');
 
                 return { ...state, hero, score, step };
             }

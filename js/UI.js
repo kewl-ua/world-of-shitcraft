@@ -96,11 +96,11 @@ function C(options) {
 }
 
 function HeroNameInput() {
-    const tree = new C({
+    const tree = C({
         tag: 'fieldset',
         classes: ['create-name'],
         content: [
-            new C({
+            C({
                 tag: 'label',
                 classes: ['label-name'],
                 attributes: {
@@ -108,7 +108,7 @@ function HeroNameInput() {
                 },
                 content: 'Your name:'
             }),
-            new C({
+            C({
                 tag: 'input',
                 id: 'hero-name',
                 classes: ['input-name'],
@@ -125,15 +125,15 @@ function HeroNameInput() {
 }
 
 function HeroClassProperty(property, value) {
-    const tree = new C({
+    const tree = C({
         tag: 'tr',
         content: [
-            new C({
+            C({
                 tag: 'td',
                 classes: ['hero-property'],
                 content: property
             }),
-            new C({
+            C({
                 tag: 'td',
                 classes: ['hero-value'],
                 content: value
@@ -145,22 +145,22 @@ function HeroClassProperty(property, value) {
 }
 
 function HeroClassInfo(className, img) {
-    const tree = new C({
+    const tree = C({
         tag: 'table',
         classes: ['hero'],
         content: [
-            new C({
+            C({
                 tag: 'thead',
-                content: new C({
+                content: C({
                     tag: 'tr',
                     classes: ['hero-image-container'],
-                    content: new C({
+                    content: C({
                         tag: 'th',
                         classes: ['hero-image-wrapper'],
                         attributes: {
                             colspan: 2
                         },
-                        content: new C({
+                        content: C({
                             tag: 'img',
                             classes: ['hero-image'],
                             attributes: {
@@ -171,10 +171,10 @@ function HeroClassInfo(className, img) {
                     })
                 })
             }),
-            new C({
+            C({
                 tag: 'tbody',
                 content: [
-                    new C({
+                    C({
                         tag: 'tr',
                         content: [
                             HeroClassProperty('Class:', className),
@@ -192,16 +192,16 @@ function HeroClassInfo(className, img) {
 }
 
 function HeroClassInput() {
-    const tree = new C({
+    const tree = C({
         tag: 'fieldset',
         classes: ['create-class'],
         content: [
-            new C({
+            C({
                 tag: 'div',
                 classes: ['heroes'],
                 content: [
                     // Barbarian class
-                    new C({
+                    C({
                         tag: 'input',
                         id: `barbarian-radio`,
                         classes: ['input-class'],
@@ -212,7 +212,7 @@ function HeroClassInput() {
                             type: 'radio'
                         }
                     }),
-                    new C({
+                    C({
                         tag: 'label',
                         classes: ['label-class'],
                         attributes: {
@@ -221,7 +221,7 @@ function HeroClassInput() {
                         content: HeroClassInfo('Barbarian', `img/${heroClasses.BARBARIAN}.png`)
                     }),
                     // Paladin class
-                    new C({
+                    C({
                         tag: 'input',
                         id: `paladin-radio`,
                         classes: ['input-class'],
@@ -231,7 +231,7 @@ function HeroClassInput() {
                             type: 'radio'
                         }
                     }),
-                    new C({
+                    C({
                         tag: 'label',
                         classes: ['label-class'],
                         attributes: {
@@ -248,10 +248,10 @@ function HeroClassInput() {
 }
 
 function HeroCreateInput() {
-    const tree = new C({
+    const tree = C({
         tag: 'div',
         classes: ['create-controls'],
-        content: new C({
+        content: C({
             tag: 'input',
             id: 'create-hero',
             classes: ['create-control'],
@@ -266,7 +266,7 @@ function HeroCreateInput() {
 }
 
 function CreateHeroForm() {
-    const tree = new C({
+    const tree = C({
         tag: 'form',
         classes: ['create-form'],
         id: 'create-form',
@@ -293,7 +293,7 @@ function CreateHeroForm() {
 }
 
 function Prompt(content) {
-    const tree = new C({
+    const tree = C({
         tag: 'div',
         classes: ['box'],
         content: C({
@@ -348,9 +348,211 @@ function PromptControl(content, options) {
     return tree;
 }
 
+// Card
+/**
+ * 
+ * @param {Hero | Mob} unit 
+ * @returns 
+ */
+function CardImage(unit) {
+    const tree = C({
+        tag: 'div',
+        classes: ['card-image'],
+        content: C({
+            tag: 'img',
+            classes: ['card-image-inner'],
+            attributes: {
+                src: `../img/${unit.className}.png`,
+                alt: unit.name
+            }
+        })
+    });
+
+    return tree;
+}
+
+function CardTitle(title) {
+    const tree = C({
+        tag: 'h3',
+        classes: ['card-title'],
+        content: title
+    });
+
+    return tree;
+}
+
+function CardSubtitle(subtitle) {
+    const tree = C({
+        tag: 'p',
+        classes: ['card-subtitle'],
+        content: subtitle
+    });
+
+    return tree;
+}
+
+function CardContent(content) {
+    const tree = C({
+        tag: 'div',
+        classes: ['card-content'],
+        content
+    });
+
+    return tree;
+}
+
+function CardContentHero(hero) {
+    const tree = CardContent([CardInfoHero(hero), CardImage(hero)]);
+
+    return tree;
+}
+
+function CardInfo(content) {
+    const tree = C({
+        tag: 'div',
+        classes: ['card-info'],
+        content
+    });
+
+    return tree;
+}
+
+function CardInfoHero(hero) {
+    const tree = CardInfo([
+        C({
+            tag: 'div',
+            classes: ['card-info-bg']
+        }),
+        CardTitle(hero.name),
+        CardSubtitle(hero.className)
+    ]);
+
+    return tree;
+}
+
+
+function CardFooter(content) {
+    const tree = C({
+        tag: 'div',
+        classes: ['card-footer'],
+        content
+    });
+
+    return tree;
+}
+
+function CardStatHp(hp) {
+    const tree = C({
+        tag: 'li',
+        classes: ['card-stat', 'card-stat-hp'],
+        content: [
+            C({
+                tag: 'h4',
+                classes: ['card-stat-title'],
+                content: 'Health'
+            }),
+            C({
+                tag: 'strong',
+                classes: ['card-stat-value'],
+                content: hp
+            })
+        ]
+    });
+
+    return tree;
+}
+
+function CardStats(content) {
+    const tree = C({
+        tag: 'ul',
+        classes: ['card-stats'],
+        content
+    });
+
+    return tree;
+}
+
+function CardStatsHero(hero) {
+    const tree = C({
+        tag: 'ul',
+        classes: ['card-stats'],
+        content: CardStats([
+            CardStatHp(hero.hp),
+            CardStatDmg(hero.dmg),
+            CardStatMoral(hero.moral)
+        ])
+    });
+
+    return tree;
+}
+
+
+function CardStatDmg(dmg) {
+    const tree = C({
+        tag: 'li',
+        classes: ['card-stat', 'card-stat-dmg'],
+        content: [
+            C({
+                tag: 'h4',
+                classes: ['card-stat-title'],
+                content: 'Attack'
+            }),
+            C({
+                tag: 'strong',
+                classes: ['card-stat-value'],
+                content: dmg
+            })
+        ]
+    });
+
+    return tree;
+}
+
+function CardStatMoral(moral) {
+    const tree = C({
+        tag: 'li',
+        classes: ['card-stat', 'card-stat-moral'],
+        content: [
+            C({
+                tag: 'h4',
+                classes: ['card-stat-title'],
+                content: 'Moral'
+            }),
+            C({
+                tag: 'strong',
+                classes: ['card-stat-value'],
+                content: moral
+            })
+        ]
+    });
+
+    return tree;
+}
+
+function Card(content) {
+    const tree = C({
+        tag: 'div',
+        classes: ['card'],
+        content
+    });
+
+    return tree;
+}
+
+function HeroCard() {
+    const { hero } = gameContext.state;
+
+    const tree = Card([
+        CardContentHero(hero),
+        CardFooter(CardStatsHero(hero))
+    ]);
+
+    return tree;
+}
+
 // App components
 function CreateHeroComponent() {
-    const tree = new C({
+    const tree = C({
         tag: 'div',
         classes: ['box'],
         content: C({
@@ -412,7 +614,6 @@ function FinishComponent() {
     const startControlTree = PromptControl('Start again', {
         events: {
             click() {
-                console.log('Click');
                 gameContext.dispatch(actions.createHero());
             }
         }
@@ -445,6 +646,9 @@ class GameUI {
             case stepTypes.DOUBTING:
                 this.domEl = this.doubting();
                 break;
+            case stepTypes.FIGHTING:
+                this.domEl = this.fighting();
+                break;
             case stepTypes.FINISH:
                 this.domEl = this.finish();
                 break;
@@ -462,7 +666,12 @@ class GameUI {
     }
 
     doubting() {
-        return DoubtingComponent();
+        // return DoubtingComponent();
+        return HeroCard();
+    }
+
+    fighting() {
+        return HeroCard();
     }
 
     finish() {
