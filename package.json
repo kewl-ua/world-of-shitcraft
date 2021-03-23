@@ -10,9 +10,9 @@
     "gulp-sass": "^4.1.0"
   },
   "scripts": {
-      "start": "npx gulp"
+    "start": "npx gulp"
   },
   "keywords": [],
-  "author": "",
+  "author": "kewl",
   "license": "ISC"
 }
