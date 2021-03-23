@@ -67,6 +67,13 @@ function musicBuild(cb) {
     cb();
 }
 
+function faviconBuild(cb) {
+    gulp.src('./favicon.ico')
+        .pipe(gulp.dest('./build'));
+
+    cb();
+}
+
 module.exports = {
     default: gulp.series(styles, watch, serve),
     watch,
