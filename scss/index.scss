@@ -234,14 +234,14 @@
 
             /* TODO: refactor */
             &-hero {
-                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight-hero.jpeg');
+                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('img/fight-hero.jpeg');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
             }
 
             &-mob {
-                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('../img/fight-mob.jpg');
+                background: linear-gradient(to right, rgba(0, 25, 115, .65)), url('img/fight-mob.jpg');
                 background-repeat: no-repeat;
                 background-size: cover;
                 background-position: center;
