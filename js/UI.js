@@ -593,16 +593,6 @@ function MobCard(mob) {
     return tree;
 }
 
-// Fight
-function Attack() {
-    const tree = C({
-        tag: 'button',
-        classes: ['attack'],
-    });
-
-    return tree;
-}
-
 // App components
 function CreateHeroComponent() {
     const tree = C({
@@ -722,6 +712,18 @@ function IntroducingEnemyComponent() {
     return tree;
 }
 
+function FightWonComponent() {
+    const textTree = PropmtText('You won!');
+    const contentTree = PromptContent(textTree);
+    const tree = Prompt(contentTree);
+
+    setTimeout(() => {
+        gameContext.dispatch(actions.idle());
+    }, 1500);
+
+    return tree;
+}
+
 function FinishComponent() {
     const score = gameContext.state.score;
     const textTree = PropmtText(`Your score is: ${score}.\n Do you want to start again?`);
@@ -750,7 +752,15 @@ function FightingComponent() {
                 classes: ['arena-fighter'],
                 content: HeroCard(hero)
             }),
-            Attack(),
+            C({
+                tag: 'button',
+                classes: ['attack'],
+                events: {
+                    click() {
+                        gameContext.dispatch(actions.heroAttack())
+                    }
+                }
+            }),
             C({
                 tag: 'div',
                 classes: ['arena-fighter'],
@@ -799,6 +809,12 @@ class GameUI {
             case stepTypes.FIGHTING:
                 this.domEl = this.fighting();
                 break;
+            case stepTypes.HERO_ATTACKING:
+                this.domEl = this.heroAttacking();
+                break;
+            case stepTypes.FIGHT_WON:
+                this.domEl = this.fightWon();
+                break;
             case stepTypes.FINISH:
                 this.domEl = this.finish();
                 break;
@@ -837,6 +853,15 @@ class GameUI {
 
     fighting() {
         return FightingComponent();
+    }
+    
+    heroAttacking() {
+        // TODO: implement
+        return FightingComponent();
+    }
+
+    fightWon() {
+        return FightWonComponent();
     }
 
     finish() {

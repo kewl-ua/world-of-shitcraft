@@ -20,6 +20,8 @@ const stepTypes = {
     DETERMING_PATH: 'DETERMING_PATH',
     IDLE: 'IDLE',
     FIGHTING: 'FIGHTING',
+    HERO_ATTACKING: 'HERO_ATTACKING',
+    MOB_ATTACKING: 'MOB_ATTACKING',
     DOUBTING: 'DOUBTING',
     ENEMY_FOUND: 'ENEMY_FOUND',
     INTRODUCING_ENEMY: 'INTRODUCING_ENEMY',
@@ -30,7 +32,8 @@ const stepTypes = {
 
 const actionTypes = {
     CREATE_HERO: 'CREATE_HERO',
-    ATTACK: 'ATTACK',
+    HERO_ATTACK: 'HERO_ATTACK',
+    MOB_ATTACK: 'MOB_ATTACK',
     START: 'START',
     DETERMINE_PATH: 'DETERMINE_PATH',
     IDLE: 'IDLE',
@@ -39,6 +42,7 @@ const actionTypes = {
     DOUBT: 'DOUBT',
     RUN_AWAY: 'RUN_AWAY',
     FIGHT: 'FIGHT',
+    FINISH_FIGHTING: 'FINISH_FIGHTING',
     FINISH: 'FINISH'
 };
 
@@ -65,7 +69,7 @@ const createHardBarbarianHero = createBarbarianHero({ hp: randomize(45, 60), dmg
 const createImpossibleBarbarianHero = createBarbarianHero({ hp: 45, dmg: 8, moral: 3 });
 
 // Mob constructos
-const createMob = className => stats => ({
+const createMob = className => stats => () => ({
     className,
     hp: stats.hp,
     dmg: stats.dmg,
@@ -109,7 +113,6 @@ const spawnHardHero = generateHeroSpawner(complexityModes.HARD);
 const spawnImpossbileHero = generateHeroSpawner(complexityModes.IMPOSSIBLE);
 
 // Mobs
-// TODO: refactor
 const generateMobSpawner = (complexity) => {
     const complexityChanceSpawnersMap = {
         [complexityModes.EASY]: [
@@ -150,7 +153,8 @@ const spawnImpossibleMob = generateMobSpawner(complexityModes.IMPOSSIBLE);
 const actions = {
     start: (hero) => ({ type: actionTypes.START, hero }),
     determinePath: () => ({ type: actionTypes.DETERMINE_PATH }),
-    attack: (attacker, target) => ({ type: actionTypes.ATTACK, attacker, target }),
+    heroAttack: () => ({ type: actionTypes.HERO_ATTACK }),
+    mobAttack: () => ({ type: actionTypes.MOB_ATTACK }),
     createHero: () => ({ type:  actionTypes.CREATE_HERO }),
     idle: () => ({ type: actionTypes.IDLE }),
     lookForEnemies: () => ({ type: actionTypes.LOOK_FOR_ENEMIES }),
@@ -220,7 +224,7 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 return { ...state, step };
             }
             case actionTypes.LOOK_FOR_ENEMIES: {
-                const mob = this.spawnMob();
+                const mob = this.spawnMob()();
                 const step = stepTypes.ENEMY_FOUND;
 
                 return { ...state, mob, step };
@@ -248,37 +252,35 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
 
                 return { ...state, step };
             }
-            case actionTypes.ATTACK: {
-                function attack(attacker, target) {
-                    const hpPrediction = target.hp - attacker.dmg;
-                    const newHp = hpPrediction > target.criticalHp ? hpPrediction : target.criticalHp;
+            case actionTypes.HERO_ATTACK: {
+                let { hero, mob, score } = state;
+                const expectedHp = mob.hp - hero.dmg;
+                const mobHp = expectedHp > mob.criticalHp ? expectedHp : mob.criticalHp;
+                const step = mobHp === mob.criticalHp ? stepTypes.FIGHT_WON : stepTypes.HERO_ATTACKING;
 
-                    target.hp = newHp;
-
-                    return target;
-                }
-
-                let hero = state.hero;
-                let mob = state.mob;
-                let step = stepTypes.FIGHTING;
-                let score = state.score;
-                
-                mob = attack(state.hero, state.mob);
-
-                if (mob.hp <= mob.criticalHp) {
+                if (step === stepTypes.FIGHT_WON) {
                     mob = null;
-                    step = stepTypes.FIGHT_WON;
                     score += 1;
                 } else {
-                    hero = attack(state.mob, state.hero);
-
-                    if (hero.hp <= hero.criticalHp) {
-                        hero = null;
-                        step = stepTypes.FINISH;
-                    }
+                    mob.hp = mobHp;
                 }
 
-                return { ...state, mob, hero, step };
+                return { ...state, mob, step, score };
+            }
+            case actionTypes.MOB_ATTACK: {
+                let { hero, mob } = state;
+                const expectedHp = hero.hp - mob.dmg;
+                const heroHp = expectedHp > hero.criticalHp ? expectedHp : hero.criticalHp;
+                const step = heroHp === hero.criticalHp ? stepTypes.FINISH : stepTypes.MOB_ATTACKING;
+
+                if (step === stepTypes.FINISH) {
+                    hero = null;
+                    mob = null;
+                } else {
+                    hero.hp = heroHp;
+                }
+
+                return { ...state, hero, mob, step };
             }
             case actionTypes.FINISH: {
                 const keepPlaying = false;
@@ -286,11 +288,6 @@ const gameGenerator = (heroSpawner, mobSpawner) => ({
                 const step = stepTypes.FINISH;
 
                 return { ...state, keepPlaying, bestScore, step };
-            }
-            case actionTypes.FIGHT_WON: {
-                const score = state.score + 1;
-
-                return { ...state, score };
             }
             default: {
                 return state;
