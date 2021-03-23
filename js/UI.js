@@ -362,7 +362,7 @@ function CardImage(unit) {
             tag: 'img',
             classes: ['card-image-inner'],
             attributes: {
-                src: `../img/${unit.className}.png`,
+                src: `img/${unit.className}.png`,
                 alt: unit.name
             }
         })
