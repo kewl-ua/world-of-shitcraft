@@ -46,7 +46,7 @@ class MusicSurrounder {
             case stepTypes.START:
             case stepTypes.IDLE:
             case stepTypes.DOUBTING:
-                this.volume(0.3);
+                this.volume(1);
                 this.changeSong('../music/start.mp3');
                 break;
             case stepTypes.FIGHTING:
