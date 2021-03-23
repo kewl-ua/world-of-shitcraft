@@ -40,12 +40,15 @@ class MusicSurrounder {
     react({ step }) {
         switch (step) {
             case stepTypes.CREATE_HERO:
+                this.volume(0.3);
+                this.changeSong('../music/create-hero.mp3');
+                break;
             case stepTypes.START:
             case stepTypes.IDLE:
+            case stepTypes.DOUBTING:
                 this.volume(0.3);
                 this.changeSong('../music/start.mp3');
                 break;
-            case stepTypes.DOUBTING:
             case stepTypes.FIGHTING:
                 this.volume(1);
                 this.changeSong('../music/fight.mp3');
