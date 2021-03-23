@@ -32,5 +32,7 @@ function watch(cb) {
 
 module.exports = {
     default: gulp.series(styles, watch, serve),
-    styles
+    watch,
+    styles,
+    build: gulp.series(styles)
 };
