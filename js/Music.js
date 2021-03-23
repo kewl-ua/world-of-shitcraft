@@ -39,6 +39,7 @@ class MusicSurrounder {
 
     react({ step }) {
         switch (step) {
+            case stepTypes.CREATE_HERO:
             case stepTypes.START:
             case stepTypes.IDLE:
                 this.volume(0.3);
