@@ -4,10 +4,11 @@
   "description": "Develop your own way of the Capitolium Assault",
   "main": "gulpfile.js",
   "devDependencies": {
-    "browser-sync": "^2.26.14",
-    "gulp": "^4.0.2",
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-sass": "^4.1.0"
+    "browser-sync": "^3.0.3",
+    "gulp": "^5.0.0",
+    "gulp-autoprefixer": "^9.0.0",
+    "gulp-sass": "^5.1.0",
+    "sass": "^1.83.4"
   },
   "scripts": {
     "start": "npx gulp"
