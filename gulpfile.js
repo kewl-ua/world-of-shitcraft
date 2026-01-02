@@ -1,12 +1,17 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var autoprefixer = require('gulp-autoprefixer');
-var browserSync = require('browser-sync').create();
+const gulp = require('gulp');
+const gulpSass = require('gulp-sass');
+const dartSass = require('sass');
+const autoprefixer = require('gulp-autoprefixer').default;
+const browserSync = require('browser-sync').create();
+
+const sass = gulpSass(dartSass);
 
 function styles(cb) {
     gulp.src('./scss/index.scss')
         .pipe(sass({ outputStyle: 'expanded' }).on('error', sass.logError))
-        .pipe(autoprefixer(['last 30 versions']))
+        .pipe(autoprefixer({
+            cascade: false
+        }))
         .pipe(gulp.dest('./css'));
 
     cb();
